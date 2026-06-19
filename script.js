@@ -17,15 +17,15 @@ const PATHS = {
   textures: {
     khomus: 'textures/khomus.png',
     kyrympa: 'textures/kyrympa.png',
-    dungur: 'textures/dungur.jpg'
+    dungur: 'textures/dungur.png'
   },
   images: {
     khomus: 'images/khomus.png',
     khomus_hero: 'images/khomus_hero.jpg',
     khomus_card: 'images/khomus_card.jpg',
     kyrympa: 'images/kyrympa.png',
-    kyrympa_hero: 'images/kyrympa_hero.jpg',
-    kyrympa_card: 'images/kyrympa_card.jpg',
+    kyrympa_hero: 'images/kyrympa_hero.jpeg',
+    kyrympa_card: 'images/kyrympa_card.png',
     dungur: 'images/dungur.png',
     dungur_hero: 'images/dungur_hero.jpg',
     dungur_card: 'images/dungur_card.jpg'
@@ -67,7 +67,9 @@ const instruments = [
     bumpMap1Path: 'textures/kyrympa_bump1.png',
     bumpMap2Path: 'textures/kyrympa_bump2.png',
     color: 0x8b5a2b,
-    imagePath: PATHS.images.kyrympa
+    imagePath: PATHS.images.kyrympa,
+    heroImage: PATHS.images.kyrympa_hero,
+    cardImage: PATHS.images.kyrympa_card,
   },
   {
     id: 'dungur',
@@ -78,11 +80,13 @@ const instruments = [
     audio: PATHS.sounds.dungur,
     modelPath: PATHS.models.dungur,
     texturePath: PATHS.textures.dungur,
-    colorMapPath: 'textures/dungur_color.jpg',
+    colorMapPath: 'textures/dungur_color.jpeg',
     bumpMap1Path: 'textures/dungur_bump1.jpg',
     bumpMap2Path: 'textures/dungur_bump1.jpg',
     color: 0x4a3728,
-    imagePath: PATHS.images.dungur
+    imagePath: PATHS.images.dungur,
+    heroImage: PATHS.images.dungur_hero,
+    cardImage: PATHS.images.dungur_card,
   }
 ];
 
@@ -148,7 +152,8 @@ function setupCategories() {
 
 // ===== ПОИСК =====
 function setupSearch() {
-  searchToggle.addEventListener('click', () => {
+  searchToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
     searchBox.classList.toggle('open');
     if (searchBox.classList.contains('open')) {
       searchInput.focus();
@@ -240,7 +245,7 @@ function showSuggestions(query) {
   }
 }
 
-function renderSuggestions(items, query) {
+function renderSuggestions(container, items, query) {
   let html = '';
   items.forEach((inst, index) => {
     const highlightedName = highlightText(inst.name, query);
@@ -249,7 +254,6 @@ function renderSuggestions(items, query) {
 
     html += `
       <div class="suggestion-item" data-id="${inst.id}" data-index="${index}">
-        <img class="suggestion-img" src="${inst.imagePath}" alt="${inst.name}" />
         <div class="suggestion-info">
           <span class="suggestion-name">${highlightedName}</span>
           <span class="suggestion-desc">${highlightedDesc}</span>
@@ -258,16 +262,16 @@ function renderSuggestions(items, query) {
     `;
   });
 
-  suggestionsContainer.innerHTML = html;
-  suggestionsContainer.classList.add('show');
+  container.innerHTML = html;
+  container.classList.add('show');
 
-  suggestionsContainer.querySelectorAll('.suggestion-item').forEach(item => {
+  container.querySelectorAll('.suggestion-item').forEach(item => {
     item.addEventListener('click', () => {
       const id = item.dataset.id;
       const inst = instruments.find(i => i.id === id);
       if (inst) {
         searchInput.value = inst.name;
-        suggestionsContainer.classList.remove('show');
+        container.classList.remove('show');
         searchBox.classList.remove('open');
         renderInstrumentPage(inst);
       }
@@ -373,6 +377,22 @@ function renderHomePage() {
   globalAudio.src = '';
   isPlaying = false;
 
+  // Путь к фото для главной страницы
+  const heroImage = 'images/hero.png'; // Или любое другое фото
+
+  mainContent.innerHTML = `
+    <div class="hero-fullwidth">
+
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h1>Звуки Саха</h1>
+        <p>Познакомьтесь с культурой народа Саха через звук и 3D-образы</p>
+      </div>
+    </div>
+    <div style="padding: 24px 20px 48px;">
+      <div class="home-grid" id="homeGrid"></div>
+    </div>
+  `;
   mainContent.innerHTML = `
     <div class="hero-image">
       <img src="images/hero.png" alt="Звуки Саха" />
@@ -393,7 +413,7 @@ function renderHomePage() {
       </div>
       <div class="more-card" data-section="project">
         <div class="more-card-left">
-          <span class="more-card-desc">О проекте и его создателях</span>
+          <span class="more-card-desc">О проекте</span>
         </div>
         <span class="more-card-title">Проект</span>
       </div>
@@ -437,6 +457,19 @@ function renderHistoryPage() {
       <h1 style="font-family:'Montserrat',sans-serif; font-size:2.8rem; color:#1a1a1a; margin:0 0 20px 16px;">
         История <span style="color:#c9a063;">народных инструментов Саха</span>
       </h1>
+
+      <!-- ===== ВИДЕО С ДЗЕНА ===== -->
+      <div style="margin: 0 4px 24px 4px; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 2px solid #ccc; background: #000;">
+        <iframe 
+          src="https://dzen.ru/embed/vVuBKSTQI8h4?from_block=partner&from=zen&mute=0&autoplay=0&tv=0" 
+          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+          allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture; encrypted-media" 
+          data-testid="embed-iframe" 
+          frameborder="0" 
+          scrolling="no" 
+          allowfullscreen>
+        </iframe>
+      </div>
 
       <div style="background:#d5d1cb; border:2px solid #ccc; padding:28px 32px; margin:0 4px;">
 
@@ -545,70 +578,75 @@ function renderInstrumentPage(instrument) {
   globalAudio.pause();
   globalAudio.src = '';
 
-  // ===== РАЗНЫЕ ФОТО ДЛЯ РАЗНЫХ БЛОКОВ =====
   const heroImage = instrument.heroImage || instrument.imagePath;
   const cardImage = instrument.cardImage || instrument.imagePath;
 
+  // Новое описание для страницы инструмента (можно задать отдельно)
+  const instrumentDescriptions = {
+    khomus: 'Хомус — это не просто инструмент, а голос предков. Его металлический язычок рождает вибрации, которые проникают в самую душу, открывая врата между мирами.',
+    kyrympa: 'Кырыымпа — это песня степи, воплощённая в дереве и струнах. Её мягкий голос рассказывает истории о любви, свободе и бескрайних просторах Якутии.',
+    dungur: 'Дюнгюр — это сердце шаманского ритуала. Его глубокий ритм пульсирует в такт вселенной, призывая духов и очищая пространство.'
+  };
+
+  const longDescription = instrumentDescriptions[instrument.id] || instrument.description;
+
   mainContent.innerHTML = `
-    <!-- ===== БЛОК 1: ФОТО НА ВЕСЬ ФОН + ПРОИГРЫВАТЕЛЬ ===== -->
+    <!-- ===== БЛОК 1: 50% ФОТО + 50% 3D МОДЕЛЬ ===== -->
     <div class="instrument-feature">
-      <div class="feature-hero">
-        <img class="hero-bg" src="${heroImage}" alt="${instrument.name}" />
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-          <h1>${instrument.name}</h1>
-          <p class="subtitle">${instrument.description}</p>
-          
-          <div class="hero-player-card">
-            <div class="player-title">Прослушать</div>
+      <div class="feature-split-50">
+        <!-- Левая половина: фото -->
+        <div class="feature-split-half feature-split-image">
+          <img src="${heroImage}" alt="${instrument.name}" />
+          <div class="split-overlay">
+            <h2>${instrument.name}</h2>
+            <p>${longDescription}</p>
+          </div>
+        </div>
+        <!-- Правая половина: 3D модель -->
+        <div class="feature-split-half feature-split-3d" id="modelContainer">
+          <canvas id="${canvasId}"></canvas>
+          <button class="fullscreen-btn" id="fullscreenBtn" title="На весь экран">
+            <svg id="expandIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+            </svg>
+            <svg id="collapseIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+              <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/>
+            </svg>
+          </button>
+          <div class="model-hint-3d">СКМ масштаб • ЛКМ переместить</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== БЛОК 2: ФОТО СЛЕВА + АУДИОПЛЕЕР СПРАВА ===== -->
+    <div class="instrument-feature">
+      <div class="feature-card audio-card">
+        <div class="card-image">
+          <img src="${cardImage}" alt="${instrument.name}" />
+        </div>
+        <div class="card-text audio-card-text">
+          <span class="label">Прослушать звучание</span>
+          <h2>${instrument.name}</h2>
+          <!-- АУДИОПЛЕЕР -->
+          <div class="audio-player-card">
             <div class="player-row">
-              <button class="play-btn-hero" id="playPauseBtnHero">
-                <svg id="playIconHero" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                <svg id="pauseIconHero" viewBox="0 0 24 24" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+              <button class="play-btn-audio" id="playPauseBtnAudio">
+                <svg id="playIconAudio" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                <svg id="pauseIconAudio" viewBox="0 0 24 24" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
               </button>
-              <div class="player-info">
+              <div class="player-info-audio">
                 <div class="track-name">${instrument.name}</div>
-                <div class="track-artist">Якутский народный инструмент</div>
-                <div class="progress-bar-hero" id="progressBarHero">
-                  <div class="progress-fill-hero" id="progressFillHero"></div>
+                <div class="track-artist">Звук • Якутский народный инструмент</div>
+                <div class="progress-bar-audio" id="progressBarAudio">
+                  <div class="progress-fill-audio" id="progressFillAudio"></div>
                 </div>
-                <div class="time-display-hero">
-                  <span id="currentTimeHero">0:00</span> / <span id="durationHero">0:00</span>
+                <div class="time-display-audio">
+                  <span id="currentTimeAudio">0:00</span> / <span id="durationAudio">0:00</span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== БЛОК 2: 3D МОДЕЛЬ ===== -->
-    <div class="instrument-feature">
-      <div class="feature-3d-full" id="modelContainer">
-        <canvas id="${canvasId}"></canvas>
-        <button class="fullscreen-btn" id="fullscreenBtn" title="На весь экран">
-          <svg id="expandIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
-          </svg>
-          <svg id="collapseIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
-            <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/>
-          </svg>
-        </button>
-        <div class="model-hint-3d">🖱️ Вращайте • Зажимайте для перемещения • Колёсико — масштаб</div>
-      </div>
-    </div>
-
-    <!-- ===== БЛОК 3: ФОТО СЛЕВА + ТЕКСТ СПРАВА ===== -->
-    <div class="instrument-feature">
-      <div class="feature-card">
-        <div class="card-image">
-          <img src="${cardImage}" alt="${instrument.name}" />
-        </div>
-        <div class="card-text">
-          <span class="label">О инструменте</span>
-          <h2>${instrument.name}</h2>
-          <p>${'Хомус - якутский варган, один из самых древних инструментов на планете. Его история насчитывает более 5 тысяч лет. В Якутии хомус изготавливали из металла (кованое железо, латунь, серебро) или дерева (лиственница, сосна). Шаманы использовали хомус для вхождения в транс. Считалось, что вибрации язычка создают «мостик» между мирами, позволяя общаться с духами предков и природными силами. Звук хомуса имитирует голос ветра, журчание воды и крики птиц — всё то, что окружало кочевника в степи. В якутской культуре хомус также был инструментом личного самовыражения. Мужчины и женщины играли на нём, передавая свои чувства, от радости до глубокой печали. Существовали даже «хомусные состязания», где мастера соревновались в виртуозности и изобретательности.'}</p>
-          <button class="back-home-btn" id="backHomeBtn">← На главную</button>
+          <button class="back-home-btn" id="backHomeBtn" style="margin-top:20px;">← На главную</button>
         </div>
       </div>
     </div>
@@ -923,44 +961,40 @@ function createProceduralModel(instrument, texture = null) {
 }
 
 // ===== АУДИО =====
-// ===== АУДИО (с двумя плеерами) =====
 function setupAudioPlayer(audioSrc) {
-  // Элементы первого плеера (в hero-блоке)
-  const playBtnHero = document.getElementById('playPauseBtnHero');
-  const progressFillHero = document.getElementById('progressFillHero');
-  const progressBarHero = document.getElementById('progressBarHero');
-  const currentTimeHero = document.getElementById('currentTimeHero');
-  const durationHero = document.getElementById('durationHero');
-  const playIconHero = document.getElementById('playIconHero');
-  const pauseIconHero = document.getElementById('pauseIconHero');
+  // Элементы нового плеера (в блоке 2)
+  const playBtnAudio = document.getElementById('playPauseBtnAudio');
+  const progressFillAudio = document.getElementById('progressFillAudio');
+  const progressBarAudio = document.getElementById('progressBarAudio');
+  const currentTimeAudio = document.getElementById('currentTimeAudio');
+  const durationAudio = document.getElementById('durationAudio');
+  const playIconAudio = document.getElementById('playIconAudio');
+  const pauseIconAudio = document.getElementById('pauseIconAudio');
 
-  // Элементы второго плеера (если есть в card-text)
-  // Используем глобальный audio
-
-  if (!playBtnHero) return;
+  if (!playBtnAudio) return;
 
   globalAudio.src = audioSrc;
   globalAudio.load();
   isPlaying = false;
-  updatePlayIcons(false);
+  updateAudioIcons(false);
 
   globalAudio.onloadedmetadata = () => {
-    durationHero.textContent = formatTime(globalAudio.duration);
+    durationAudio.textContent = formatTime(globalAudio.duration);
   };
 
   globalAudio.ontimeupdate = () => {
     if (globalAudio.duration) {
       const percent = (globalAudio.currentTime / globalAudio.duration) * 100;
-      progressFillHero.style.width = percent + '%';
-      currentTimeHero.textContent = formatTime(globalAudio.currentTime);
+      progressFillAudio.style.width = percent + '%';
+      currentTimeAudio.textContent = formatTime(globalAudio.currentTime);
     }
   };
 
   globalAudio.onended = () => {
     isPlaying = false;
-    updatePlayIcons(false);
-    progressFillHero.style.width = '0%';
-    currentTimeHero.textContent = '0:00';
+    updateAudioIcons(false);
+    progressFillAudio.style.width = '0%';
+    currentTimeAudio.textContent = '0:00';
   };
 
   globalAudio.onerror = () => {
@@ -968,37 +1002,36 @@ function setupAudioPlayer(audioSrc) {
   };
 
   // Кнопка плеера
-  playBtnHero.onclick = () => {
+  playBtnAudio.onclick = () => {
     if (globalAudio.paused) {
       globalAudio.play()
         .then(() => {
           isPlaying = true;
-          updatePlayIcons(true);
+          updateAudioIcons(true);
         })
         .catch(e => console.log('Ожидание взаимодействия:', e));
     } else {
       globalAudio.pause();
       isPlaying = false;
-      updatePlayIcons(false);
+      updateAudioIcons(false);
     }
   };
 
   // Прогресс-бар
-  progressBarHero.onclick = (e) => {
+  progressBarAudio.onclick = (e) => {
     if (!globalAudio.duration) return;
-    const rect = progressBarHero.getBoundingClientRect();
+    const rect = progressBarAudio.getBoundingClientRect();
     const x = e.clientX - rect.left;
     globalAudio.currentTime = (x / rect.width) * globalAudio.duration;
   };
 
-  function updatePlayIcons(playing) {
-    if (playIconHero && pauseIconHero) {
-      playIconHero.style.display = playing ? 'none' : 'block';
-      pauseIconHero.style.display = playing ? 'block' : 'none';
+  function updateAudioIcons(playing) {
+    if (playIconAudio && pauseIconAudio) {
+      playIconAudio.style.display = playing ? 'none' : 'block';
+      pauseIconAudio.style.display = playing ? 'block' : 'none';
     }
   }
 }
-
 // ===== FULLSCREEN =====
 function setupFullscreen() {
   const fullscreenBtn = document.getElementById('fullscreenBtn');
