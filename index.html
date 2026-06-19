@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Sounds of Sakha — Якутские музыкальные инструменты</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  
+  <div class="site-wrapper">
+    <!-- ===== ШАПКА ===== -->
+    <header class="header">
+      <div class="header-inner container">
+        <div class="logo-area" id="logoArea">
+          <span class="site-title">SOUNDS OF SAKHA</span>
+        </div>
+
+        <div class="search-wrapper">
+          <button class="search-toggle" id="searchToggle" aria-label="Поиск">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="7"/>
+              <path d="M21 21l-4.35-4.35"/>
+            </svg>
+          </button>
+          <div class="search-box" id="searchBox">
+            <input type="text" id="searchInput" placeholder="Поиск..." autocomplete="off" />
+            <button id="searchBtn" aria-label="Искать">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="7"/>
+                <path d="M21 21l-4.35-4.35"/>
+              </svg>
+            </button>
+            <button class="search-close" id="searchClose">✕</button>
+          </div>
+          <div class="search-suggestions" id="searchSuggestions"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== КАТЕГОРИИ (БЛОК СРАЗУ ПОД ШАПКОЙ) ===== -->
+    <section class="categories-section">
+      <div class="container">
+        <div class="categories-grid" id="categoriesGrid">
+          <div class="category-card" data-category="strings">
+            <span class="cat-emoji"></span>
+            <span class="cat-title">Струнные</span>
+            <span class="cat-count" id="stringsCount">0</span>
+          </div>
+          <div class="category-card" data-category="winds">
+            <span class="cat-emoji"></span>
+            <span class="cat-title">Духовые</span>
+            <span class="cat-count" id="windsCount">0</span>
+          </div>
+          <div class="category-card" data-category="percussion">
+            <span class="cat-emoji"></span>
+            <span class="cat-title">Ударные</span>
+            <span class="cat-count" id="percussionCount">0</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ОСНОВНОЙ КОНТЕНТ ===== -->
+
+    <main id="mainContent" class="main container"></main>
+
+    <!-- ===== ПОДВАЛ ===== -->
+    <footer class="footer">
+      <div class="container">
+        Курсовая работа <span>Бандерова Богдана</span> ПИ-25 <br> по предмету "Веб-Програмирование и дизайн" <br> материалы украдены из открытых источников
+      </div>
+    </footer>
+  </div>
+
+  <!-- ===== АУДИО ===== -->
+  <audio id="globalAudio" preload="auto"></audio>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>

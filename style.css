@@ -1,0 +1,1182 @@
+/* ===== СБРОС И БАЗА ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f5f0eb;
+  color: #1f1f1f;
+  line-height: 1.4;
+  min-height: 100vh;
+}
+.site-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.container {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+h1, h2, h3, .site-title, .header-nav-link, .instrument-name {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+ul {
+  list-style: none;
+}
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ===== ШАПКА ===== */
+.header {
+  background: #1a1a1a;
+  border-bottom: 2px solid #333;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  flex-wrap: wrap;
+}
+.logo-area {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.logo-area:hover {
+  opacity: 0.7;
+}
+.site-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #f0e6d2;
+  letter-spacing: 2px;
+}
+
+/* ===== НАВИГАЦИЯ В ШАПКЕ ===== */
+.header-nav {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.header-nav-link {
+  padding: 8px 18px;
+  border: 1px solid #444;
+  font-size: 0.8rem;
+  color: #f0e6d2;
+  transition: all 0.2s;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: transparent;
+}
+.header-nav-link:hover {
+  background: #c9a063;
+  color: #1a1a1a;
+  border-color: #c9a063;
+}
+
+/* ===== ПОИСК ===== */
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-toggle {
+  color: #f0e6d2;
+  padding: 6px;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.search-toggle:hover {
+  opacity: 0.7;
+}
+.search-box {
+  display: none;
+  align-items: center;
+  background: #2a2a2a;
+  padding: 6px 14px;
+  gap: 6px;
+  border: 1px solid #444;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 260px;
+  z-index: 10;
+}
+.search-box.open {
+  display: flex;
+}
+.search-box input {
+  background: transparent;
+  border: none;
+  color: #e0e0e0;
+  font-family: 'Inter', sans-serif;
+  padding: 6px 8px;
+  flex: 1;
+  outline: none;
+  font-size: 0.95rem;
+}
+.search-box input::placeholder {
+  color: #777;
+}
+.search-box button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  color: #aaa;
+}
+.search-box button:hover {
+  color: #c9a063;
+}
+.search-close {
+  color: #888;
+  font-size: 1.1rem;
+  padding: 4px 6px;
+}
+.search-close:hover {
+  color: #f0e6d2;
+}
+
+.search-suggestions {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  width: 300px;
+  background: #2a2a2a;
+  overflow: hidden;
+  border: 1px solid #444;
+  z-index: 300;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.search-suggestions.show {
+  display: block;
+}
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid #3a3a3a;
+}
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+.suggestion-item:hover,
+.suggestion-item.active {
+  background: #c9a063;
+  color: #1a1a1a;
+}
+.suggestion-emoji {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+.suggestion-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.suggestion-name {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #f0e6d2;
+}
+.suggestion-item:hover .suggestion-name,
+.suggestion-item.active .suggestion-name {
+  color: #1a1a1a;
+}
+.suggestion-desc {
+  font-size: 0.8rem;
+  color: #999;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+.suggestion-no-results {
+  padding: 16px;
+  text-align: center;
+  color: #999;
+  font-size: 0.9rem;
+}
+.suggestion-highlight {
+  background: rgba(201, 160, 99, 0.3);
+  padding: 0 2px;
+}
+
+/* ===== КАТЕГОРИИ (ПРЯМО ПОД ШАПКОЙ, БЕЗ ОТСТУПА) ===== */
+.categories-section {
+  background: #f5f0eb;
+  border-bottom: 2px solid #ccc;
+  padding: 0;
+}
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+.category-card {
+  background: #e8e0d8;
+  border-right: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  padding: 20px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.category-card:last-child {
+  border-right: none;
+}
+.category-card:hover {
+  background: #c9a063;
+  border-color: #c9a063;
+}
+.category-card .cat-emoji {
+  font-size: 2.2rem;
+  margin-bottom: 4px;
+}
+.category-card .cat-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #1a1a1a;
+}
+.category-card .cat-count {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 2px;
+}
+
+/* ===== ОСНОВНОЙ КОНТЕНТ ===== */
+.main {
+  flex: 1;
+  padding: 16px 0 32px;
+}
+
+/* ===== ГЛАВНАЯ ===== */
+.justify-content {
+  text-align: center;
+  padding: 24px 16px 20px;
+  background: #e8e0d8;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 24px;
+}
+.hero h1 {
+  font-size: 3.6rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+}
+.hero h1 span {
+  display: block;
+  font-size: 2.4rem;
+  color: #c9a063;
+}
+.hero p {
+  font-size: 0.95rem;
+  color: #555;
+  margin-top: 6px;
+}
+
+/* ===== БЛОК "БОЛЬШЕ ЧЕМ ИНСТРУМЕНТ" ===== */
+.more-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  padding-left: 16px;
+}
+.more-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 32px;
+  width: 100%;
+}
+.more-card {
+  background: #e8e0d8;
+  border-bottom: 2px solid #ccc;
+  border-top: 2px solid #ccc;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 48px;
+  width: 100%;
+}
+.more-card:first-child {
+  border-top: 2px solid #ccc;
+}
+.more-card:last-child {
+  border-bottom: 2px solid #ccc;
+}
+.more-card:hover {
+  background: #c9a063;
+  border-color: #c9a063;
+}
+.more-card-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+.more-card-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #666;
+  font-weight: 500;
+}
+.more-card-desc {
+  font-size: 0.8rem;
+  color: #555;
+  line-height: 1.3;
+}
+.more-card-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  margin-left: 16px;
+  flex-shrink: 0;
+}
+
+/* ===== КАРТОЧКИ ИНСТРУМЕНТОВ (УВЕЛИЧЕННЫЕ) ===== */
+.instruments-section-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #1a1a1a;
+  padding-bottom: 6px;
+  justify-content: center;
+  display: inline-block;
+  padding-left: 16px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 4px;
+  padding: 0 0;
+}
+
+.product-card {
+  background: #e8e0d8;
+  border: 2px solid #ccc;
+  padding: 24px 20px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+}
+.product-card:hover {
+  background: #ddd6cc;
+  border-color: #aaa;
+}
+.product-card:active {
+  transform: scale(0.98);
+}
+.product-emoji {
+  font-size: 5rem;
+  margin-bottom: 14px;
+  display: block;
+}
+.product-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.product-desc {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 14px;
+  line-height: 1.4;
+  flex: 1;
+}
+.add-to-cart {
+  width: 100%;
+  padding: 12px;
+  background: #1a1a1a;
+  color: #f0e6d2;
+  border: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+.add-to-cart:hover {
+  background: #c9a063;
+  color: #1a1a1a;
+}
+
+/* ===== СТРАНИЦА ИНСТРУМЕНТА ===== */
+.instrument-feature {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  min-height: 340px;
+  background: #d5d1cb;
+  border: 2px solid #ccc;
+  border-bottom: none;
+  overflow: hidden;
+}
+.instrument-feature:last-child {
+  border-bottom: 2px solid #ccc;
+}
+
+/* ===== ВАРИАНТ 1: ФОТО НА ВЕСЬ ФОН + ПРОИГРЫВАТЕЛЬ ОТДЕЛЬНЫМ БЛОКОМ ===== */
+.feature-hero {
+  position: relative;
+  width: 100%;
+  min-height: 480px;
+  overflow: hidden;
+  background: #b9b3a8;
+}
+.feature-hero .hero-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  z-index: 0;
+}
+.feature-hero .hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 1;
+}
+.feature-hero .hero-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  min-height: 480px;
+  padding: 48px 56px;
+}
+.feature-hero .hero-content h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3.6rem;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  margin-bottom: 8px;
+}
+.feature-hero .hero-content .subtitle {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.85);
+  max-width: 500px;
+  line-height: 1.6;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.3);
+  margin-bottom: 24px;
+}
+
+/* Плеер — отдельный блок поверх фона */
+.hero-player-card {
+  background: rgba(26, 26, 26, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 16px;
+  padding: 20px 28px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.hero-player-card .player-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #c9a063;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.hero-player-card .player-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.hero-player-card .play-btn-hero {
+  background: #c9a063;
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+  flex-shrink: 0;
+}
+.hero-player-card .play-btn-hero:hover {
+  background: #dbb87c;
+  transform: scale(1.05);
+}
+.hero-player-card .play-btn-hero svg {
+  width: 24px;
+  height: 24px;
+  fill: #1a1a1a;
+}
+.hero-player-card .player-info {
+  flex: 1;
+  color: #f0e6d2;
+}
+.hero-player-card .player-info .track-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.hero-player-card .player-info .track-artist {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+.hero-player-card .progress-bar-hero {
+  width: 100%;
+  height: 4px;
+  background: #444;
+  border-radius: 4px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+.hero-player-card .progress-fill-hero {
+  width: 0%;
+  height: 100%;
+  background: #c9a063;
+  border-radius: 4px;
+  transition: width 0.1s linear;
+}
+.hero-player-card .time-display-hero {
+  font-size: 0.7rem;
+  color: #999;
+  margin-top: 4px;
+}
+
+/* ===== ВАРИАНТ 2: 3D МОДЕЛЬ ОТДЕЛЬНО ===== */
+.feature-3d-full {
+  width: 100%;
+  min-height: 480px;
+  background: #cac7c2;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.feature-3d-full canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+.feature-3d-full .model-hint-3d {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(30, 30, 30, 0.7);
+  backdrop-filter: blur(4px);
+  color: #ccc;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* ===== ВАРИАНТ 3: ФОТО СЛЕВА + ТЕКСТ СПРАВА ===== */
+.feature-card {
+  display: flex;
+  width: 100%;
+  min-height: 320px;
+  background: #d5d1cb;
+}
+.feature-card .card-image {
+  flex: 0 0 45%;
+  overflow: hidden;
+  background: #b9b3a8;
+  border-radius: 0 20px 20px 0;
+}
+.feature-card .card-image img {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  object-fit: cover;
+  display: block;
+}
+.feature-card .card-text {
+  flex: 1;
+  padding: 40px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.feature-card .card-text h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+.feature-card .card-text .label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #888;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.feature-card .card-text p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.7;
+  max-width: 500px;
+}
+.feature-card .card-text .back-home-btn {
+  padding: 10px 24px;
+  background: #2f2f2f;
+  color: #f0e6d2;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  transition: background 0.2s;
+  margin-top: 16px;
+  align-self: flex-start;
+}
+.feature-card .card-text .back-home-btn:hover {
+  background: #c9a063;
+  color: #1a1a1a;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+  .feature-hero .hero-content {
+    padding: 32px 24px;
+    min-height: 400px;
+  }
+  .feature-hero .hero-content h1 {
+    font-size: 2.4rem;
+  }
+  .hero-player-card {
+    max-width: 100%;
+    padding: 16px 20px;
+  }
+  .feature-3d-full {
+    min-height: 350px;
+  }
+  .feature-card {
+    flex-direction: column !important;
+    min-height: auto;
+  }
+  .feature-card .card-image {
+    flex: 0 0 200px;
+    border-radius: 0 !important;
+    min-height: 200px;
+  }
+  .feature-card .card-text {
+    padding: 24px 20px;
+  }
+  .feature-card .card-text h2 {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .feature-hero .hero-content {
+    padding: 20px 16px;
+    min-height: 340px;
+  }
+  .feature-hero .hero-content h1 {
+    font-size: 1.8rem;
+  }
+  .feature-hero .hero-content .subtitle {
+    font-size: 0.9rem;
+  }
+  .hero-player-card {
+    padding: 12px 16px;
+  }
+  .hero-player-card .play-btn-hero {
+    width: 40px;
+    height: 40px;
+  }
+  .hero-player-card .play-btn-hero svg {
+    width: 20px;
+    height: 20px;
+  }
+  .feature-3d-full {
+    min-height: 280px;
+  }
+  .feature-card .card-text h2 {
+    font-size: 1.3rem;
+  }
+}
+
+.instrument-view {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #e8e0d8;
+  border: 2px solid #ccc;
+  padding: 0;
+  margin: 0 0 16px 0;
+  overflow: hidden;
+}
+.model-container {
+  width: 100%;
+  height: 60vh;
+  min-height: 350px;
+  max-height: 700px;
+  background: #d5cfc8;
+  position: relative;
+}
+#threeCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.fullscreen-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  background: rgba(26, 26, 26, 0.8);
+  border: 1px solid #666;
+  color: #f0e6d2;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.fullscreen-btn:hover {
+  background: #c9a063;
+  color: #1a1a1a;
+}
+.fullscreen-btn svg {
+  width: 18px;
+  height: 18px;
+}
+.model-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(26, 26, 26, 0.7);
+  color: #ccc;
+  padding: 4px 14px;
+  font-size: 0.7rem;
+  pointer-events: none;
+  opacity: 0.8;
+}
+.info-panel {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.info-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.instrument-name {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  border-bottom: 2px solid #1a1a1a;
+  padding-bottom: 6px;
+}
+.back-home-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background: #1a1a1a;
+  color: #f0e6d2;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  border: 1px solid #444;
+  white-space: nowrap;
+}
+.back-home-btn:hover {
+  background: #c9a063;
+  color: #1a1a1a;
+}
+.back-home-btn svg {
+  width: 16px;
+  height: 16px;
+}
+.description {
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.6;
+  background: #f5f0eb;
+  padding: 14px 18px;
+  max-width: 800px;
+}
+.audio-player {
+  background: #1a1a1a;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: #f0e6d2;
+  max-width: 480px;
+}
+.play-btn {
+  background: #c9a063;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+  flex-shrink: 0;
+}
+.play-btn:hover {
+  background: #dbb87c;
+}
+.play-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: #1a1a1a;
+}
+.track-info {
+  flex: 1;
+  min-width: 100px;
+  font-weight: 500;
+}
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: #444;
+  margin-top: 4px;
+  cursor: pointer;
+}
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  background: #c9a063;
+  transition: width 0.1s linear;
+}
+.time-display {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.model-container.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
+  z-index: 9999;
+}
+.fullscreen-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 9998;
+}
+.fullscreen-overlay.active {
+  display: block;
+}
+
+/* ===== ПОДВАЛ ===== */
+.footer {
+  background: #1a1a1a;
+  color: #888;
+  text-align: center;
+  padding: 16px;
+  font-size: 0.85rem;
+  border-top: 2px solid #333;
+}
+.footer span {
+  color: #c9a063;
+}
+
+/* ===== АДАПТИВ ===== */
+@media (max-width: 768px) {
+  .header-inner {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  .site-title {
+    font-size: 1.4rem;
+  }
+  .header-nav-link {
+    font-size: 0.7rem;
+    padding: 6px 12px;
+  }
+  .search-box {
+    width: 200px;
+    right: -8px;
+  }
+  .search-suggestions {
+    width: 240px;
+    right: -8px;
+  }
+  .category-card {
+    min-height: 64px;
+    padding: 12px 8px;
+  }
+  .category-card .cat-emoji {
+    font-size: 1.8rem;
+  }
+  .category-card .cat-title {
+    font-size: 0.85rem;
+  }
+  .hero h1 {
+    font-size: 2.8rem;
+  }
+  .hero h1 span {
+    font-size: 2rem;
+  }
+  .more-card {
+    min-height: 44px;
+    padding: 10px 14px;
+  }
+  .more-card-title {
+    font-size: 0.9rem;
+    margin-left: 10px;
+  }
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+  .product-card {
+    min-height: 260px;
+    padding: 18px 14px;
+  }
+  .product-emoji {
+    font-size: 3.6rem;
+  }
+  .product-title {
+    font-size: 1.2rem;
+  }
+  .model-container {
+    height: 45vh;
+    min-height: 280px;
+  }
+  .instrument-name {
+    font-size: 1.6rem;
+  }
+  .info-panel {
+    padding: 16px 16px 20px;
+  }
+  .info-panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+@media (max-width: 480px) {
+  .header-inner {
+    padding: 8px 8px;
+    gap: 6px;
+  }
+  .site-title {
+    font-size: 1.1rem;
+  }
+  .header-nav {
+    gap: 2px;
+  }
+  .header-nav-link {
+    font-size: 0.55rem;
+    padding: 4px 8px;
+  }
+  .search-box {
+    width: 160px;
+    right: -16px;
+    padding: 4px 8px;
+  }
+  .search-suggestions {
+    width: 190px;
+    right: -16px;
+  }
+  .category-card {
+    min-height: 52px;
+    padding: 8px 4px;
+  }
+  .category-card .cat-emoji {
+    font-size: 1.4rem;
+    margin-bottom: 2px;
+  }
+  .category-card .cat-title {
+    font-size: 0.7rem;
+  }
+  .category-card .cat-count {
+    font-size: 0.6rem;
+  }
+  .main {
+    padding: 12px 0 20px;
+  }
+  .hero {
+    padding: 16px 12px 14px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: 2rem;
+  }
+  .hero h1 span {
+    font-size: 1.4rem;
+  }
+  .hero p {
+    font-size: 0.8rem;
+  }
+  .more-title {
+    font-size: 1.6rem;
+    padding-left: 8px;
+    margin-bottom: 8px;
+  }
+  .more-card {
+    min-height: 40px;
+    padding: 8px 12px;
+  }
+  .more-card-desc {
+    font-size: 0.7rem;
+  }
+  .more-card-title {
+    font-size: 0.75rem;
+    margin-left: 8px;
+  }
+  .instruments-section-title {
+    font-size: 1.4rem;
+    padding-left: 8px;
+    margin-bottom: 12px;
+  }
+  .products-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+  .product-card {
+    min-height: 200px;
+    padding: 14px 10px;
+  }
+  .product-emoji {
+    font-size: 2.8rem;
+    margin-bottom: 8px;
+  }
+  .product-title {
+    font-size: 0.95rem;
+  }
+  .product-desc {
+    font-size: 0.75rem;
+    margin-bottom: 10px;
+  }
+  .add-to-cart {
+    font-size: 0.7rem;
+    padding: 8px;
+  }
+  .model-container {
+    height: 40vh;
+    min-height: 220px;
+  }
+  .instrument-name {
+    font-size: 1.3rem;
+  }
+  .info-panel {
+    padding: 12px 12px 16px;
+    gap: 10px;
+  }
+  .description {
+    font-size: 0.85rem;
+    padding: 10px 14px;
+  }
+  .audio-player {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+  .play-btn {
+    width: 36px;
+    height: 36px;
+  }
+  .play-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+}
