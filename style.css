@@ -1,4 +1,3 @@
-/* ===== СБРОС И БАЗА ===== */
 * {
   margin: 0;
   padding: 0;
@@ -44,7 +43,7 @@ img {
   display: block;
 }
 
-/* ===== ШАПКА ===== */
+/*шапка*/
 .header {
   background: #1a1a1a;
   border-bottom: 2px solid #333;
@@ -74,7 +73,7 @@ img {
   letter-spacing: 2px;
 }
 
-/* ===== НАВИГАЦИЯ В ШАПКЕ ===== */
+/* навиг*/
 .header-nav {
   display: flex;
   gap: 4px;
@@ -97,6 +96,7 @@ img {
   border-color: #c9a063;
 }
 
+/* поиск*/
 /* ===== ПОИСК ===== */
 .search-wrapper {
   position: relative;
@@ -179,8 +179,9 @@ img {
   color: #f0e6d2;
 }
 
+/* ПОДСКАЗКИ ПОИСКА */
 .search-suggestions {
-  display: none;
+  display: none !important;
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
@@ -196,19 +197,65 @@ img {
   overflow-y: auto;
 }
 .search-suggestions.show {
-  display: block;
+  display: block !important;
 }
-@media (max-width: 768px) {
-  .search-box {
-    width: 220px;
-    right: -8px;
-    padding: 6px 12px;
-  }
-  .search-suggestions {
-    min-width: 220px;
-    max-width: 240px;
-    right: -8px;
-  }
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid #3a3a3a;
+}
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+.suggestion-item:hover,
+.suggestion-item.active {
+  background: #c9a063;
+  color: #1a1a1a;
+}
+
+.suggestion-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.suggestion-name {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #f0e6d2;
+}
+.suggestion-item:hover .suggestion-name,
+.suggestion-item.active .suggestion-name {
+  color: #1a1a1a;
+}
+.suggestion-desc {
+  font-size: 0.8rem;
+  color: #999;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+.suggestion-item:hover .suggestion-desc,
+.suggestion-item.active .suggestion-desc {
+  color: #3a3020;
+}
+.suggestion-no-results {
+  padding: 16px;
+  text-align: center;
+  color: #999;
+  font-size: 0.9rem;
+}
+.suggestion-highlight {
+  background: rgba(201, 160, 99, 0.3);
+  padding: 0 2px;
 }
 
 @media (max-width: 480px) {
@@ -289,7 +336,7 @@ img {
   padding: 0 2px;
 }
 
-/* ===== КАТЕГОРИИ (УМЕНЬШЕННАЯ ВЫСОТА, СЧЁТЧИК НА ОДНОМ УРОВНЕ) ===== */
+/* долбанные категории*/
 .categories-section {
   background: #f5f0eb;
   border-bottom: 2px solid #ccc;
@@ -341,14 +388,14 @@ img {
   background: rgba(255,255,255,0.7);
 }
 
-/* ===== ОСНОВНОЙ КОНТЕНТ ===== */
+
 .main {
   flex: 1;
   padding: 0;
 }
 
-/* ===== ГЛАВНАЯ ===== */
-/* ===== HERO НА ВЕСЬ ЭКРАН (ГЛАВНАЯ) ===== */
+
+/*мэйн*/
 .hero-fullwidth {
   width: 100%;
   height: 100vh;
@@ -423,7 +470,7 @@ img {
   margin-top: 6px;
 }
 
-/* ===== БЛОК "БОЛЬШЕ ЧЕМ ИНСТРУМЕНТ" ===== */
+/*инстр блок*/
 .more-title {
   font-size: 2.2rem;
   font-weight: 700;
@@ -495,7 +542,7 @@ img {
   flex-shrink: 0;
 }
 
-/* ===== КАРТОЧКИ ИНСТРУМЕНТОВ (УВЕЛИЧЕННЫЕ) ===== */
+/*я карта, я карта, я карта*/
 .instruments-section-title {
   font-size: 1.8rem;
   font-weight: 700;
@@ -514,7 +561,7 @@ img {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  justify-content: center;  /* ← КАРТОЧКИ ПО ЦЕНТРУ */
+  justify-content: center;
   padding: 0;
   max-width: 1300px;
   margin: 0 auto;
@@ -531,8 +578,8 @@ img {
   align-items: center;
   justify-content: center;
   min-height: 320px;
-  width: 280px;             /* ← ФИКСИРОВАННАЯ ШИРИНА */
-  flex-shrink: 0;           /* ← НЕ СЖИМАТЬСЯ */
+  width: 280px;             
+  flex-shrink: 0;         
 }
 .product-card:hover {
   background: #ddd6cc;
@@ -580,8 +627,7 @@ img {
   color: #1a1a1a;
 }
 
-/* ===== СТРАНИЦА ИНСТРУМЕНТА ===== */
-/* ===== АУДИОПЛЕЕР В КАРТОЧКЕ ===== */
+/*страница позора*/
 .audio-card {
   background: #d5d1cb;
 }
@@ -673,7 +719,7 @@ img {
 .instrument-feature:last-child {
   border-bottom: 2px solid #ccc;
 }
-/* ===== 50% ФОТО + 50% 3D МОДЕЛЬ ===== */
+/*50 на 50*/
 .feature-split-50 {
   display: flex;
   width: 100%;
@@ -688,7 +734,7 @@ img {
   overflow: hidden;
 }
 
-/* Левая половина — фото */
+/* фотка*/
 .feature-split-image {
   background: #b9b3a8;
 }
@@ -722,7 +768,7 @@ img {
   line-height: 1.6;
 }
 
-/* Правая половина — 3D модель */
+/*3дшка*/
 .feature-split-3d {
   background: #cac7c2;
   display: flex;
@@ -793,7 +839,7 @@ img {
     font-size: 0.9rem;
   }
 }
-/* ===== ВАРИАНТ 1: ФОТО НА ВЕСЬ ФОН + ПРОИГРЫВАТЕЛЬ ОТДЕЛЬНЫМ БЛОКОМ ===== */
+/*варик с 1 блоком*/
 .feature-hero {
   position: relative;
   width: 100%;
@@ -852,7 +898,7 @@ img {
   margin-bottom: 24px;
 }
 
-/* Плеер — отдельный блок поверх фона */
+/*плеер на блоке*/
 .hero-player-card {
   background: rgba(26, 26, 26, 0.85);
   backdrop-filter: blur(12px);
@@ -932,37 +978,8 @@ img {
   margin-top: 4px;
 }
 
-/* ===== ВАРИАНТ 2: 3D МОДЕЛЬ ОТДЕЛЬНО ===== */
-.feature-3d-full {
-  width: 100%;
-  min-height: 480px;
-  background: #cac7c2;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.feature-3d-full canvas {
-  width: 100% !important;
-  height: 100% !important;
-  display: block;
-}
-.feature-3d-full .model-hint-3d {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(30, 30, 30, 0.7);
-  backdrop-filter: blur(4px);
-  color: #ccc;
-  padding: 6px 18px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  pointer-events: none;
-  opacity: 0.7;
-}
 
-/* ===== ВАРИАНТ 3: ФОТО СЛЕВА + ТЕКСТ СПРАВА ===== */
+/*ласт блок*/
 .feature-card {
   display: flex;
   width: 100%;
@@ -970,10 +987,10 @@ img {
   background: #d5d1cb;
 }
 .feature-card .card-image {
-  flex: 0 0 45%;
+  flex: 0 0 50%;
   overflow: hidden;
   background: #b9b3a8;
-  border-radius: 0 20px 20px 0;
+  border-radius: 0 0 0;
 }
 .feature-card .card-image img {
   width: 100%;
@@ -1030,7 +1047,7 @@ img {
   color: #1a1a1a;
 }
 
-/* Адаптив */
+/*тихий ужас*/
 @media (max-width: 768px) {
   .feature-hero .hero-content {
     padding: 32px 24px;
@@ -1277,7 +1294,7 @@ img {
   display: block;
 }
 
-/* ===== ПОДВАЛ ===== */
+/*203*/
 .footer {
   background: #1a1a1a;
   color: #888;
@@ -1290,7 +1307,7 @@ img {
   color: #c9a063;
 }
 
-/* ===== АДАПТИВ ===== */
+/*адаптивка 2*/
 @media (max-width: 768px) {
   .header-inner {
     padding: 10px 12px;

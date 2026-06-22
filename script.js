@@ -2,22 +2,24 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-// ===== ДАННЫЕ =====
 const PATHS = {
   sounds: {
     khomus: 'sounds/khomus.mp3',
     kyrympa: 'sounds/kyrympa.mp3',
-    dungur: 'sounds/dungur.mp3'
+    dungur: 'sounds/dungur.mp3',
+    ayaan: 'sounds/ayaan.mp3'
   },
   models: {
     khomus: 'models/khomus.glb',
     kyrympa: 'models/kyrympa.glb',
-    dungur: 'models/dungur.glb'
+    dungur: 'models/dungur.glb',
+    ayaan: 'models/ayaan.glb'
   },
   textures: {
     khomus: 'textures/khomus.png',
     kyrympa: 'textures/kyrympa.png',
-    dungur: 'textures/dungur.png'
+    dungur: 'textures/dungur.png',
+    ayaan: 'textures/ayaan.png'
   },
   images: {
     khomus: 'images/khomus.png',
@@ -28,7 +30,10 @@ const PATHS = {
     kyrympa_card: 'images/kyrympa_card.png',
     dungur: 'images/dungur.png',
     dungur_hero: 'images/dungur_hero.jpg',
-    dungur_card: 'images/dungur_card.jpg'
+    dungur_card: 'images/dungur_card.jpg',
+    ayaan: 'images/ayaan.png',
+    ayaan_hero: 'images/ayaan_hero.jpg',
+    ayaan_card: 'images/ayaan_card.jpg'
   }
 };
 
@@ -38,16 +43,13 @@ const instruments = [
     name: 'Хомус',
     category: 'strings',
     description: 'Якутский варган — древний язычковый инструмент. Изготовляется из металла или дерева. Звук извлекается колебанием язычка, создавая богатый обертонами ритмический рисунок.',
+    longDescription: 'Хомус — это не просто инструмент, а голос предков. Его металлический язычок рождает вибрации, которые проникают в самую душу, открывая врата между мирами. В руках мастера хомус способен имитировать голоса природы: пение птиц, журчание ручья, завывание ветра. Шаманы использовали его для вхождения в транс, считая, что звук хомуса помогает общаться с духами. Сегодня хомус — символ культурного возрождения народа Саха, его звучание можно услышать на международных фестивалях варганной музыки.',
     keywords: ['варган', 'хомус', 'язычковый', 'металлический', 'шаманский', 'khomus'],
     audio: PATHS.sounds.khomus,
     modelPath: PATHS.models.khomus,
-    // Основная текстура (albedo/diffuse)
     texturePath: PATHS.textures.khomus,
-    // Дополнительная карта цвета (color map)
     colorMapPath: 'textures/khomus_color.jpeg',
-    // Первая bump-карта (bump map)
     bumpMap1Path: 'textures/khomus_bump2.png',
-    // Вторая bump-карта (используется как normal map)
     bumpMap2Path: 'textures/khomus_bump1.png',
     color: 0x8b5a2b,
     imagePath: PATHS.images.khomus,
@@ -59,6 +61,7 @@ const instruments = [
     name: 'Кырыымпа',
     category: 'strings',
     description: 'Смычковый инструмент с овальным корпусом, напоминает скрипку. Имеет две струны, настраиваемые в квинту. Звук мягкий, певучий.',
+    longDescription: 'Кырыымпа — это песня степи, воплощённая в дереве и струнах. Её мягкий голос рассказывает истории о любви, свободе и бескрайних просторах Якутии. Корпус инструмента вырезают из цельного куска кедра или лиственницы, а струны делают из конского волоса. Звук кырыымпы настолько похож на человеческий голос, что её часто называют «поющей душой степи». Традиционно инструмент сопровождал исполнение олонхо — героического эпоса якутов, помогая рассказчику передать эмоции и драматизм событий.',
     keywords: ['смычковый', 'скрипка', 'струнный', 'кырыымпа', 'тойук', 'kyrympa'],
     audio: PATHS.sounds.kyrympa,
     modelPath: PATHS.models.kyrympa,
@@ -76,6 +79,7 @@ const instruments = [
     name: 'Дюнгюр',
     category: 'percussion',
     description: 'Шаманский бубен с широким ободом и натянутой кожей. Используется в ритуалах. Глубокий резонирующий звук достигается ударами колотушки.',
+    longDescription: 'Дюнгюр — это сердце шаманского ритуала. Его глубокий ритм пульсирует в такт вселенной, призывая духов и очищая пространство. Обод бубна изготавливают из священной лиственницы, а мембрану — из оленьей или лосиной кожи. Металлические подвески на ободе создают дополнительный звенящий фон, который, как считают шаманы, помогает путешествовать между мирами. Каждый удар колотушки — это шаг в иное измерение, где время течёт иначе, а духи говорят с человеком на языке ритма.',
     keywords: ['бубен', 'шаманский', 'дюнгюр', 'ударный', 'ритуальный', 'dungur'],
     audio: PATHS.sounds.dungur,
     modelPath: PATHS.models.dungur,
@@ -87,11 +91,27 @@ const instruments = [
     imagePath: PATHS.images.dungur,
     heroImage: PATHS.images.dungur_hero,
     cardImage: PATHS.images.dungur_card,
+  },
+  {
+    id: 'ayaan',
+    name: 'Айаан',
+    category: 'winds',
+    description: 'Духовой инструмент, напоминающий флейту. Изготавливается из полого стебля растения или дерева. Используется в обрядах и для сопровождения песен.',
+    longDescription: 'Айаан — это голос ветра, запечатлённый в дереве. Древний духовой инструмент, который якуты изготавливали из полых стеблей растений, чаще всего из берёзы или ивы. Считалось, что звук айаана способен успокоить души предков и призвать удачу в охоте. Мелодии, исполняемые на этом инструменте, имитируют шум леса, пение птиц и шелест травы. Сегодня айаан возрождается благодаря энтузиастам, стремящимся сохранить древние музыкальные традиции народа Саха. Его нежный, пронзительный звук напоминает о единстве человека и природы.',
+    keywords: ['духовой', 'флейта', 'айаан', 'деревянный', 'обрядовый', 'ayaan'],
+    audio: PATHS.sounds.ayaan,
+    modelPath: PATHS.models.ayaan,
+    texturePath: PATHS.textures.ayaan,
+    colorMapPath: 'textures/ayaan_color.jpg',
+    bumpMap1Path: 'textures/ayaan_bump1.jpg',
+    bumpMap2Path: 'textures/ayaan_bump2.jpg',
+    color: 0xc9a063,
+    imagePath: PATHS.images.ayaan,
+    heroImage: PATHS.images.ayaan_hero,
+    cardImage: PATHS.images.ayaan_card,
   }
 ];
 
-// ===== ГЛОБАЛКИ =====
-let currentInstrument = instruments[0];
 let scene, camera, renderer, controls, currentModel;
 const canvasId = 'threeCanvas';
 const globalAudio = document.getElementById('globalAudio');
@@ -106,10 +126,8 @@ const searchToggle = document.getElementById('searchToggle');
 const searchBox = document.getElementById('searchBox');
 const searchClose = document.getElementById('searchClose');
 const logoArea = document.getElementById('logoArea');
-const navLinks = document.querySelectorAll('.header-nav-link');
 const suggestionsContainer = document.getElementById('searchSuggestions');
 
-// ===== ОБНОВЛЕНИЕ СЧЁТЧИКОВ КАТЕГОРИЙ =====
 function updateCategoryCounts() {
   const stringsCount = instruments.filter(i => i.category === 'strings').length;
   const windsCount = instruments.filter(i => i.category === 'winds').length;
@@ -124,13 +142,38 @@ function updateCategoryCounts() {
   if (percEl) percEl.textContent = percCount;
 }
 
-// ===== ИНИЦИАЛИЗАЦИЯ =====
+function navigateTo(path) {
+  window.history.pushState({}, '', path);
+  handleRoute(path);
+}
+
+function handleRoute(path) {
+  const parts = path.replace('#', '').split('/').filter(p => p);
+  
+  if (parts.length === 0 || parts[0] === '' || parts[0] === 'home' || parts[0] === 'catalog') {
+    renderHomePage();
+  } else if (parts[0] === 'history') {
+    renderHistoryPage();
+  } else if (parts[0] === 'project') {
+    renderProjectPage();
+  } else if (parts[0] === 'instrument' && parts[1]) {
+    const inst = instruments.find(i => i.id === parts[1]);
+    if (inst) renderInstrumentPage(inst);
+    else renderHomePage();
+  } else {
+    renderHomePage();
+  }
+}
+
+window.addEventListener('popstate', () => {
+  handleRoute(window.location.pathname);
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   updateCategoryCounts();
-  renderHomePage();
+  handleRoute(window.location.pathname);
   setupSearch();
   setupLogo();
-  setupNavLinks();
   setupCategories();
 
   document.addEventListener('click', () => {
@@ -140,7 +183,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { once: true });
 });
 
-// ===== КАТЕГОРИИ =====
 function setupCategories() {
   document.querySelectorAll('.category-card').forEach(card => {
     card.addEventListener('click', () => {
@@ -150,7 +192,6 @@ function setupCategories() {
   });
 }
 
-// ===== ПОИСК =====
 function setupSearch() {
   searchToggle.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -225,32 +266,43 @@ function setupSearch() {
 }
 
 function showSuggestions(query) {
-  if (!query) {
-    suggestionsContainer.classList.remove('show');
+  const container = document.getElementById('searchSuggestions');
+  if (!container) return;
+
+  // Если запрос пустой - показываем все инструменты
+  if (!query || query.trim() === '') {
+    renderSuggestions(container, instruments, '');
     return;
   }
 
   activeSuggestionIndex = -1;
-  const q = query.toLowerCase();
+  const q = query.toLowerCase().trim();
   const filtered = instruments.filter(inst => {
     const searchText = `${inst.name} ${inst.description} ${inst.keywords.join(' ')}`.toLowerCase();
     return searchText.includes(q);
   });
 
   if (filtered.length > 0) {
-    renderSuggestions(filtered, q);
+    renderSuggestions(container, filtered, q);
   } else {
-    suggestionsContainer.innerHTML = '<div class="suggestion-no-results">🔍 Ничего не найдено</div>';
-    suggestionsContainer.classList.add('show');
+    container.innerHTML = '<div class="suggestion-no-results">тугу да булбатым</div>';
+    container.classList.add('show');
   }
 }
 
 function renderSuggestions(container, items, query) {
   let html = '';
+  
+  if (items.length === 0) {
+    container.innerHTML = '<div class="suggestion-no-results">Ничего не найдено</div>';
+    container.classList.add('show');
+    return;
+  }
+
   items.forEach((inst, index) => {
-    const highlightedName = highlightText(inst.name, query);
+    const highlightedName = query ? highlightText(inst.name, query) : inst.name;
     const shortDesc = inst.description.substring(0, 60) + '...';
-    const highlightedDesc = highlightText(shortDesc, query);
+    const highlightedDesc = query ? highlightText(shortDesc, query) : shortDesc;
 
     html += `
       <div class="suggestion-item" data-id="${inst.id}" data-index="${index}">
@@ -300,25 +352,12 @@ function updateActiveSuggestion(items) {
   });
 }
 
-// ===== ЛОГОТИП =====
 function setupLogo() {
   logoArea.addEventListener('click', () => {
-    renderHomePage();
+    navigateTo('/');
   });
 }
 
-// ===== НАВИГАЦИЯ =====
-function setupNavLinks() {
-  navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const category = link.dataset.category;
-      renderCategoryPage(category);
-    });
-  });
-}
-
-// ===== СТРАНИЦА КАТЕГОРИИ =====
 function renderCategoryPage(category) {
   const filtered = instruments.filter(inst => inst.category === category);
   const categoryNames = {
@@ -343,7 +382,7 @@ function renderCategoryPage(category) {
     </div>
   `;
 
-  document.getElementById('backFromCategory').addEventListener('click', renderHomePage);
+  document.getElementById('backFromCategory').addEventListener('click', () => navigateTo('/'));
 
   const grid = document.getElementById('categoryGrid');
   filtered.forEach(inst => {
@@ -352,7 +391,6 @@ function renderCategoryPage(category) {
   });
 }
 
-// ===== СОЗДАНИЕ КАРТОЧКИ =====
 function createProductCard(inst) {
   const card = document.createElement('div');
   card.className = 'product-card';
@@ -370,57 +408,41 @@ function createProductCard(inst) {
   return card;
 }
 
-// ===== ГЛАВНАЯ =====
 function renderHomePage() {
   isFullscreen = false;
   globalAudio.pause();
   globalAudio.src = '';
   isPlaying = false;
 
-  // Путь к фото для главной страницы
-  const heroImage = 'images/hero.png'; // Или любое другое фото
-
-  mainContent.innerHTML = `
-    <div class="hero-fullwidth">
-
-      <div class="hero-overlay"></div>
-      <div class="hero-content">
-        <h1>Звуки Саха</h1>
-        <p>Познакомьтесь с культурой народа Саха через звук и 3D-образы</p>
-      </div>
-    </div>
-    <div style="padding: 24px 20px 48px;">
-      <div class="home-grid" id="homeGrid"></div>
-    </div>
-  `;
   mainContent.innerHTML = `
     <div class="hero-image">
       <img src="images/hero.png" alt="Звуки Саха" />
     </div>
+    <div style="padding: 20px 20px 40px;">
+      <div class="more-grid" id="moreGrid">
+        <div class="more-card" data-section="catalog">
+          <div class="more-card-left">
+            <span class="more-card-desc">Все инструменты в одном месте</span>
+          </div>
+          <span class="more-card-title">Каталог</span>
+        </div>
+        <div class="more-card" data-section="history">
+          <div class="more-card-left">
+            <span class="more-card-desc">История и традиции народа Саха</span>
+          </div>
+          <span class="more-card-title">История</span>
+        </div>
+        <div class="more-card" data-section="project">
+          <div class="more-card-left">
+            <span class="more-card-desc">О проекте</span>
+          </div>
+          <span class="more-card-title">Проект</span>
+        </div>
+      </div>
 
-    <div class="more-grid" id="moreGrid">
-      <div class="more-card" data-section="catalog">
-        <div class="more-card-left">
-          <span class="more-card-desc">Все инструменты в одном месте</span>
-        </div>
-        <span class="more-card-title">Каталог</span>
-      </div>
-      <div class="more-card" data-section="history">
-        <div class="more-card-left">
-          <span class="more-card-desc">История и традиции народа Саха</span>
-        </div>
-        <span class="more-card-title">История</span>
-      </div>
-      <div class="more-card" data-section="project">
-        <div class="more-card-left">
-          <span class="more-card-desc">О проекте</span>
-        </div>
-        <span class="more-card-title">Проект</span>
-      </div>
+      <h2 class="instruments-section-title">Инструменты</h2>
+      <div class="products-grid" id="homeGrid"></div>
     </div>
-
-    <h2 class="instruments-section-title">Инструменты</h2>
-    <div class="products-grid" id="homeGrid"></div>
   `;
 
   document.querySelectorAll('.more-card').forEach(card => {
@@ -429,9 +451,9 @@ function renderHomePage() {
       if (section === 'catalog') {
         document.querySelector('.instruments-section-title').scrollIntoView({ behavior: 'smooth' });
       } else if (section === 'history') {
-        renderHistoryPage();
+        navigateTo('/history');
       } else if (section === 'project') {
-        renderProjectPage();
+        navigateTo('/project');
       }
     });
   });
@@ -443,7 +465,6 @@ function renderHomePage() {
   });
 }
 
-// ===== СТРАНИЦА "ИСТОРИЯ" =====
 function renderHistoryPage() {
   mainContent.innerHTML = `
     <div style="max-width:1000px; margin:0 auto; padding:0 4px;">
@@ -458,13 +479,11 @@ function renderHistoryPage() {
         История <span style="color:#c9a063;">народных инструментов Саха</span>
       </h1>
 
-      <!-- ===== ВИДЕО С ДЗЕНА ===== -->
       <div style="margin: 0 4px 24px 4px; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 2px solid #ccc; background: #000;">
         <iframe 
           src="https://dzen.ru/embed/vVuBKSTQI8h4?from_block=partner&from=zen&mute=0&autoplay=0&tv=0" 
           style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
           allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture; encrypted-media" 
-          data-testid="embed-iframe" 
           frameborder="0" 
           scrolling="no" 
           allowfullscreen>
@@ -472,9 +491,8 @@ function renderHistoryPage() {
       </div>
 
       <div style="background:#d5d1cb; border:2px solid #ccc; padding:28px 32px; margin:0 4px;">
-
         <h2 style="font-family:'Montserrat',sans-serif; font-size:1.6rem; color:#1a1a1a; margin-bottom:12px; border-bottom:2px solid #c9a063; padding-bottom:6px;">
-           Истоки и духовное значение
+          Истоки и духовное значение
         </h2>
         <p style="font-size:1.05rem; line-height:1.9; color:#333; margin-bottom:20px;">
           Музыкальная культура <strong>народа Саха (якутов)</strong> — одна из древнейших в Сибири. Её корни уходят в глубину веков, к <strong>шаманским ритуалам</strong> и <strong>эпическому наследию олонхо</strong>. Инструменты для якутов — не просто предметы для извлечения звука, а <strong>посредники между миром людей и духов</strong>. Каждый инструмент имел сакральное значение и использовался в определённых обрядах.
@@ -484,7 +502,7 @@ function renderHistoryPage() {
         </p>
 
         <h2 style="font-family:'Montserrat',sans-serif; font-size:1.6rem; color:#1a1a1a; margin-bottom:12px; border-bottom:2px solid #c9a063; padding-bottom:6px;">
-           Хомус — голос шамана
+          Хомус — голос шамана
         </h2>
         <p style="font-size:1.05rem; line-height:1.9; color:#333; margin-bottom:16px;">
           <strong>Хомус</strong> — якутский варган, один из <strong>самых древних инструментов</strong> на планете. Его история насчитывает более <strong>5 тысяч лет</strong>. В Якутии хомус изготавливали из <strong>металла</strong> (кованое железо, латунь, серебро) или <strong>дерева</strong> (лиственница, сосна).
@@ -497,7 +515,7 @@ function renderHistoryPage() {
         </p>
 
         <h2 style="font-family:'Montserrat',sans-serif; font-size:1.6rem; color:#1a1a1a; margin-bottom:12px; border-bottom:2px solid #c9a063; padding-bottom:6px;">
-           Кырыымпа — певучая душа степи
+          Кырыымпа — певучая душа степи
         </h2>
         <p style="font-size:1.05rem; line-height:1.9; color:#333; margin-bottom:16px;">
           <strong>Кырыымпа</strong> — смычковый струнный инструмент, напоминающий скрипку, но имеющий <strong>уникальную конструкцию</strong>. Корпус делали из <strong>цельного куска дерева</strong> (кедра или лиственницы), а струны — из <strong>конского волоса</strong> или <strong>жил животных</strong>.
@@ -510,7 +528,7 @@ function renderHistoryPage() {
         </p>
 
         <h2 style="font-family:'Montserrat',sans-serif; font-size:1.6rem; color:#1a1a1a; margin-bottom:12px; border-bottom:2px solid #c9a063; padding-bottom:6px;">
-           Дюнгюр — ритм вселенной
+          Дюнгюр — ритм вселенной
         </h2>
         <p style="font-size:1.05rem; line-height:1.9; color:#333; margin-bottom:16px;">
           <strong>Дюнгюр</strong> — шаманский бубен, который называют <strong>«конём шамана»</strong>. Его обод изготавливали из <strong>лиственницы</strong>, а мембрану — из <strong>оленьей или лосиной кожи</strong>. По краям бубна крепили <strong>металлические подвески</strong>, которые создавали дополнительный звенящий фон.
@@ -523,10 +541,23 @@ function renderHistoryPage() {
         </p>
 
         <h2 style="font-family:'Montserrat',sans-serif; font-size:1.6rem; color:#1a1a1a; margin-bottom:12px; border-bottom:2px solid #c9a063; padding-bottom:6px;">
-           Возрождение традиций сегодня
+          Айаан — голос ветра
         </h2>
         <p style="font-size:1.05rem; line-height:1.9; color:#333; margin-bottom:16px;">
-          В <strong>современной Якутии</strong> народные инструменты переживают <strong>новое рождение</strong>. Открываются мастерские, где восстанавливают древние технологии изготовления. Молодые музыканты интегрируют звучание хомуса, кырыымпы и дюнгюра в <strong>этно-фьюжн, джаз и даже электронную музыку</strong>.
+          <strong>Айаан</strong> — древний духовой инструмент, который изготавливали из полых стеблей растений, чаще всего из берёзы или ивы. Его нежный, пронзительный звук напоминает шум леса, пение птиц и шелест травы.
+        </p>
+        <p style="font-size:1.05rem; line-height:1.9; color:#333; margin-bottom:16px;">
+          Считалось, что звук айаана способен успокоить души предков и призвать удачу в охоте. Инструмент использовался в обрядах и для сопровождения песен, его мелодии передавали связь человека с природой и духами.
+        </p>
+        <p style="font-size:1.05rem; line-height:1.9; color:#333; margin-bottom:24px;">
+          Сегодня айаан возрождается благодаря энтузиастам, стремящимся сохранить древние музыкальные традиции народа Саха. Его звучание напоминает о единстве человека и окружающего мира.
+        </p>
+
+        <h2 style="font-family:'Montserrat',sans-serif; font-size:1.6rem; color:#1a1a1a; margin-bottom:12px; border-bottom:2px solid #c9a063; padding-bottom:6px;">
+          Возрождение традиций сегодня
+        </h2>
+        <p style="font-size:1.05rem; line-height:1.9; color:#333; margin-bottom:16px;">
+          В <strong>современной Якутии</strong> народные инструменты переживают <strong>новое рождение</strong>. Открываются мастерские, где восстанавливают древние технологии изготовления. Молодые музыканты интегрируют звучание хомуса, кырыымпы, дюнгюра и айаана в <strong>этно-фьюжн, джаз и даже электронную музыку</strong>.
         </p>
         <p style="font-size:1.05rem; line-height:1.9; color:#333; margin-bottom:16px;">
           Ежегодно в Якутске проходит <strong>международный фестиваль варганной музыки</strong>, где собираются мастера со всего мира. А хомус стал <strong>символом культурного возрождения</strong> народа Саха.
@@ -537,10 +568,9 @@ function renderHistoryPage() {
       </div>
     </div>
   `;
-  document.getElementById('backFromHistory').addEventListener('click', renderHomePage);
+  document.getElementById('backFromHistory').addEventListener('click', () => navigateTo('/'));
 }
 
-// ===== СТРАНИЦА "ПРОЕКТ" =====
 function renderProjectPage() {
   mainContent.innerHTML = `
     <div style="max-width:900px; margin:16px auto 0;">
@@ -556,10 +586,10 @@ function renderProjectPage() {
           <strong>«Sounds of Sakha»</strong> — это интерактивный гид по якутским музыкальным инструментам, созданный в рамках курсовой работы.
         </p>
         <p style="font-size:1.1rem; line-height:1.8; color:#333; margin-bottom:16px;">
-          <strong>Цель проекта:</strong> познакомить людей с богатой музыкальной культурой народа Саха через современные технологии — 3D-моделирование и интерактивный звук.
+          <strong>Цель проекта:</strong> познакомить людей с музыкальной культурой народа Саха через современные технологии — 3D-модели и аудио.
         </p>
         <p style="font-size:1.1rem; line-height:1.8; color:#333; margin-bottom:16px;">
-          <strong>Технологии:</strong> HTML, CSS, JavaScript, Three.js (3D-визуализация), Web Audio API.
+          <strong>Технологии:</strong> HTML, CSS, JavaScript, Three.js, Web Audio API.
         </p>
         <p style="font-size:1.1rem; line-height:1.8; color:#333;">
           <strong>Автор:</strong> Бандеров Богдан, студент группы ПИ-25.
@@ -567,12 +597,10 @@ function renderProjectPage() {
       </div>
     </div>
   `;
-  document.getElementById('backFromProject').addEventListener('click', renderHomePage);
+  document.getElementById('backFromProject').addEventListener('click', () => navigateTo('/'));
 }
 
-// ===== СТРАНИЦА ИНСТРУМЕНТА =====
 function renderInstrumentPage(instrument) {
-  currentInstrument = instrument;
   isFullscreen = false;
 
   globalAudio.pause();
@@ -580,21 +608,11 @@ function renderInstrumentPage(instrument) {
 
   const heroImage = instrument.heroImage || instrument.imagePath;
   const cardImage = instrument.cardImage || instrument.imagePath;
-
-  // Новое описание для страницы инструмента (можно задать отдельно)
-  const instrumentDescriptions = {
-    khomus: 'Хомус — это не просто инструмент, а голос предков. Его металлический язычок рождает вибрации, которые проникают в самую душу, открывая врата между мирами.',
-    kyrympa: 'Кырыымпа — это песня степи, воплощённая в дереве и струнах. Её мягкий голос рассказывает истории о любви, свободе и бескрайних просторах Якутии.',
-    dungur: 'Дюнгюр — это сердце шаманского ритуала. Его глубокий ритм пульсирует в такт вселенной, призывая духов и очищая пространство.'
-  };
-
-  const longDescription = instrumentDescriptions[instrument.id] || instrument.description;
+  const longDescription = instrument.longDescription || instrument.description;
 
   mainContent.innerHTML = `
-    <!-- ===== БЛОК 1: 50% ФОТО + 50% 3D МОДЕЛЬ ===== -->
     <div class="instrument-feature">
       <div class="feature-split-50">
-        <!-- Левая половина: фото -->
         <div class="feature-split-half feature-split-image">
           <img src="${heroImage}" alt="${instrument.name}" />
           <div class="split-overlay">
@@ -602,7 +620,6 @@ function renderInstrumentPage(instrument) {
             <p>${longDescription}</p>
           </div>
         </div>
-        <!-- Правая половина: 3D модель -->
         <div class="feature-split-half feature-split-3d" id="modelContainer">
           <canvas id="${canvasId}"></canvas>
           <button class="fullscreen-btn" id="fullscreenBtn" title="На весь экран">
@@ -618,7 +635,6 @@ function renderInstrumentPage(instrument) {
       </div>
     </div>
 
-    <!-- ===== БЛОК 2: ФОТО СЛЕВА + АУДИОПЛЕЕР СПРАВА ===== -->
     <div class="instrument-feature">
       <div class="feature-card audio-card">
         <div class="card-image">
@@ -627,7 +643,6 @@ function renderInstrumentPage(instrument) {
         <div class="card-text audio-card-text">
           <span class="label">Прослушать звучание</span>
           <h2>${instrument.name}</h2>
-          <!-- АУДИОПЛЕЕР -->
           <div class="audio-player-card">
             <div class="player-row">
               <button class="play-btn-audio" id="playPauseBtnAudio">
@@ -654,7 +669,6 @@ function renderInstrumentPage(instrument) {
     <div class="fullscreen-overlay" id="fullscreenOverlay"></div>
   `;
 
-  // Обработчики
   document.getElementById('backHomeBtn').addEventListener('click', () => {
     navigateTo('/');
   });
@@ -689,16 +703,12 @@ function initThreeJS(instrument) {
   camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
   camera.position.set(2.5, 1.8, 4.5);
 
-  renderer = new THREE.WebGLRenderer({ 
-    canvas, 
-    antialias: true,
-    alpha: false // ОТКЛЮЧАЕМ ПРОЗРАЧНОСТЬ
-  });
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
   renderer.setSize(width, height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.2;
-  renderer.sortObjects = true; // Правильная сортировка объектов
+  renderer.sortObjects = true;
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
@@ -708,7 +718,6 @@ function initThreeJS(instrument) {
   controls.minDistance = 2;
   controls.maxDistance = 8;
 
-  // ===== УЛУЧШЕННОЕ ОСВЕЩЕНИЕ =====
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
   scene.add(ambientLight);
 
@@ -728,11 +737,8 @@ function initThreeJS(instrument) {
   backLight.position.set(-1, 0.5, -2);
   scene.add(backLight);
 
-  // ===== ЗАГРУЗКА МОДЕЛИ С ТЕКСТУРАМИ =====
   const textureLoader = new THREE.TextureLoader();
-  const loader = new GLTFLoader();
 
-  // Пути к текстурам (4 текстуры)
   const texturePaths = {
     base: instrument.texturePath,
     color: instrument.colorMapPath || instrument.texturePath,
@@ -740,87 +746,35 @@ function initThreeJS(instrument) {
     bump2: instrument.bumpMap2Path || null
   };
 
-  // Загружаем все текстуры параллельно
   const textures = {};
   let loadedCount = 0;
-  const totalTextures = 1 + (texturePaths.color ? 1 : 0) + 
-                        (texturePaths.bump1 ? 1 : 0) + 
-                        (texturePaths.bump2 ? 1 : 0);
+  const totalTextures = 1 + (texturePaths.color ? 1 : 0) + (texturePaths.bump1 ? 1 : 0) + (texturePaths.bump2 ? 1 : 0);
 
   function checkAllLoaded() {
     loadedCount++;
     if (loadedCount >= totalTextures) {
-      // Все текстуры загружены — загружаем модель
       loadModelWithAllTextures(instrument, textures);
     }
   }
 
-  // Загрузка основной текстуры (base)
-  textureLoader.load(
-    texturePaths.base,
-    (tex) => {
-      textures.base = tex;
-      checkAllLoaded();
-    },
-    undefined,
-    () => {
-      textures.base = null;
-      checkAllLoaded();
-    }
-  );
+  textureLoader.load(texturePaths.base, (tex) => { textures.base = tex; checkAllLoaded(); }, undefined, () => { textures.base = null; checkAllLoaded(); });
 
-  // Загрузка текстуры цвета (color)
   if (texturePaths.color && texturePaths.color !== texturePaths.base) {
-    textureLoader.load(
-      texturePaths.color,
-      (tex) => {
-        textures.color = tex;
-        checkAllLoaded();
-      },
-      undefined,
-      () => {
-        textures.color = null;
-        checkAllLoaded();
-      }
-    );
+    textureLoader.load(texturePaths.color, (tex) => { textures.color = tex; checkAllLoaded(); }, undefined, () => { textures.color = null; checkAllLoaded(); });
   } else {
     textures.color = textures.base;
     loadedCount++;
   }
 
-  // Загрузка первой bump-карты
   if (texturePaths.bump1) {
-    textureLoader.load(
-      texturePaths.bump1,
-      (tex) => {
-        textures.bump1 = tex;
-        checkAllLoaded();
-      },
-      undefined,
-      () => {
-        textures.bump1 = null;
-        checkAllLoaded();
-      }
-    );
+    textureLoader.load(texturePaths.bump1, (tex) => { textures.bump1 = tex; checkAllLoaded(); }, undefined, () => { textures.bump1 = null; checkAllLoaded(); });
   } else {
     textures.bump1 = null;
     loadedCount++;
   }
 
-  // Загрузка второй bump-карты
   if (texturePaths.bump2) {
-    textureLoader.load(
-      texturePaths.bump2,
-      (tex) => {
-        textures.bump2 = tex;
-        checkAllLoaded();
-      },
-      undefined,
-      () => {
-        textures.bump2 = null;
-        checkAllLoaded();
-      }
-    );
+    textureLoader.load(texturePaths.bump2, (tex) => { textures.bump2 = tex; checkAllLoaded(); }, undefined, () => { textures.bump2 = null; checkAllLoaded(); });
   } else {
     textures.bump2 = null;
     loadedCount++;
@@ -844,7 +798,6 @@ function initThreeJS(instrument) {
   animate();
 }
 
-// ===== ЗАГРУЗКА МОДЕЛИ С 4 ТЕКСТУРАМИ =====
 function loadModelWithAllTextures(instrument, textures) {
   const loader = new GLTFLoader();
 
@@ -854,57 +807,29 @@ function loadModelWithAllTextures(instrument, textures) {
       if (currentModel) scene.remove(currentModel);
       const model = gltf.scene;
 
-      // Применяем текстуры ко всем мешам модели
       model.traverse((child) => {
         if (child.isMesh) {
-          // Проверяем, есть ли у материала прозрачность
-          const isTransparent = child.material && child.material.transparent === true;
-          
-          // Создаём материал с поддержкой нескольких текстур
           const materialProps = {
             roughness: 0.5,
             metalness: 0.3,
             color: new THREE.Color(instrument.color || 0x888888),
-            // ОТКЛЮЧАЕМ ПРОЗРАЧНОСТЬ
             transparent: false,
             opacity: 1.0,
-            // Настройки для правильного отображения
-            side: THREE.DoubleSide, // Отрисовка с обеих сторон
+            side: THREE.DoubleSide,
             depthWrite: true,
             depthTest: true
           };
 
-          // Основная текстура (diffuse/albedo)
-          if (textures.base) {
-            materialProps.map = textures.base;
-          }
+          if (textures.base) materialProps.map = textures.base;
+          if (textures.bump1) { materialProps.bumpMap = textures.bump1; materialProps.bumpScale = 0.3; }
+          if (textures.bump2) { materialProps.normalMap = textures.bump2; materialProps.normalScale = new THREE.Vector2(0.8, 0.8); }
 
-          // Первая bump-карта
-          if (textures.bump1) {
-            materialProps.bumpMap = textures.bump1;
-            materialProps.bumpScale = 0.3;
-          }
-
-          // Вторая bump-карта — как normal map
-          if (textures.bump2) {
-            materialProps.normalMap = textures.bump2;
-            materialProps.normalScale = new THREE.Vector2(0.8, 0.8);
-          }
-
-          // Создаём новый материал
           const newMaterial = new THREE.MeshStandardMaterial(materialProps);
-          
-          // Копируем UV-развёртку если нужно
-          if (child.material && child.material.map) {
-            // Сохраняем UV-развёртку
-          }
-          
           child.material = newMaterial;
           child.material.needsUpdate = true;
         }
       });
 
-      // Масштабирование модели
       if (instrument.id === 'khomus') model.scale.set(1.2, 1.2, 1.2);
       else if (instrument.id === 'dungur') model.scale.set(1.1, 1.1, 1.1);
 
@@ -919,7 +844,6 @@ function loadModelWithAllTextures(instrument, textures) {
   );
 }
 
-// ===== ОБНОВЛЁННАЯ ПРОЦЕДУРНАЯ МОДЕЛЬ =====
 function createProceduralModel(instrument, texture = null) {
   if (currentModel) scene.remove(currentModel);
 
@@ -954,15 +878,38 @@ function createProceduralModel(instrument, texture = null) {
     group.add(ring);
     const membrane = new THREE.Mesh(new THREE.CircleGeometry(0.73, 32), mat);
     group.add(membrane);
+  } else if (instrument.id === 'ayaan') {
+    const body = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.12, 1.6, 16), mat);
+    body.rotation.x = 0.2;
+    group.add(body);
+    const mouthpiece = new THREE.Mesh(
+      new THREE.SphereGeometry(0.1, 8, 8),
+      new THREE.MeshStandardMaterial({ color: 0x8b5a2b, roughness: 0.7 })
+    );
+    mouthpiece.position.set(0, 0.9, 0);
+    group.add(mouthpiece);
+    const holes = [
+      [0.3, 0.3, 0.05],
+      [0.3, 0.0, 0.05],
+      [0.3, -0.3, 0.05],
+      [0.3, -0.6, 0.05]
+    ];
+    holes.forEach(pos => {
+      const hole = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.03, 0.03, 0.02, 8),
+        new THREE.MeshStandardMaterial({ color: 0x332211, roughness: 0.9 })
+      );
+      hole.position.set(pos[0], pos[1], pos[2]);
+      hole.rotation.x = 0.3;
+      group.add(hole);
+    });
   }
 
   scene.add(group);
   currentModel = group;
 }
 
-// ===== АУДИО =====
 function setupAudioPlayer(audioSrc) {
-  // Элементы нового плеера (в блоке 2)
   const playBtnAudio = document.getElementById('playPauseBtnAudio');
   const progressFillAudio = document.getElementById('progressFillAudio');
   const progressBarAudio = document.getElementById('progressBarAudio');
@@ -971,7 +918,10 @@ function setupAudioPlayer(audioSrc) {
   const playIconAudio = document.getElementById('playIconAudio');
   const pauseIconAudio = document.getElementById('pauseIconAudio');
 
-  if (!playBtnAudio) return;
+  if (!playBtnAudio) {
+    console.warn('Аудиоплеер не найден');
+    return;
+  }
 
   globalAudio.src = audioSrc;
   globalAudio.load();
@@ -979,29 +929,47 @@ function setupAudioPlayer(audioSrc) {
   updateAudioIcons(false);
 
   globalAudio.onloadedmetadata = () => {
-    durationAudio.textContent = formatTime(globalAudio.duration);
+    if (durationAudio) {
+      durationAudio.textContent = formatTime(globalAudio.duration);
+    }
+    if (currentTimeAudio) {
+      currentTimeAudio.textContent = '0:00';
+    }
+    if (progressFillAudio) {
+      progressFillAudio.style.width = '0%';
+    }
   };
 
   globalAudio.ontimeupdate = () => {
-    if (globalAudio.duration) {
+    if (globalAudio.duration && !isNaN(globalAudio.duration)) {
       const percent = (globalAudio.currentTime / globalAudio.duration) * 100;
-      progressFillAudio.style.width = percent + '%';
-      currentTimeAudio.textContent = formatTime(globalAudio.currentTime);
+      if (progressFillAudio) {
+        progressFillAudio.style.width = percent + '%';
+      }
+      if (currentTimeAudio) {
+        currentTimeAudio.textContent = formatTime(globalAudio.currentTime);
+      }
     }
   };
 
   globalAudio.onended = () => {
     isPlaying = false;
     updateAudioIcons(false);
-    progressFillAudio.style.width = '0%';
-    currentTimeAudio.textContent = '0:00';
+    if (progressFillAudio) {
+      progressFillAudio.style.width = '0%';
+    }
+    if (currentTimeAudio) {
+      currentTimeAudio.textContent = '0:00';
+    }
   };
 
   globalAudio.onerror = () => {
     console.error('Ошибка загрузки аудио:', audioSrc);
+    if (durationAudio) {
+      durationAudio.textContent = '0:00';
+    }
   };
 
-  // Кнопка плеера
   playBtnAudio.onclick = () => {
     if (globalAudio.paused) {
       globalAudio.play()
@@ -1017,13 +985,15 @@ function setupAudioPlayer(audioSrc) {
     }
   };
 
-  // Прогресс-бар
-  progressBarAudio.onclick = (e) => {
-    if (!globalAudio.duration) return;
-    const rect = progressBarAudio.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    globalAudio.currentTime = (x / rect.width) * globalAudio.duration;
-  };
+  if (progressBarAudio) {
+    progressBarAudio.onclick = (e) => {
+      if (!globalAudio.duration || isNaN(globalAudio.duration)) return;
+      const rect = progressBarAudio.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const percent = Math.max(0, Math.min(1, x / rect.width));
+      globalAudio.currentTime = percent * globalAudio.duration;
+    };
+  }
 
   function updateAudioIcons(playing) {
     if (playIconAudio && pauseIconAudio) {
@@ -1032,7 +1002,14 @@ function setupAudioPlayer(audioSrc) {
     }
   }
 }
-// ===== FULLSCREEN =====
+
+function formatTime(s) {
+  if (isNaN(s) || !isFinite(s)) return '0:00';
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return `${m}:${sec < 10 ? '0' : ''}${sec}`;
+}
+
 function setupFullscreen() {
   const fullscreenBtn = document.getElementById('fullscreenBtn');
   const modelContainer = document.getElementById('modelContainer');
@@ -1082,10 +1059,9 @@ function setupFullscreen() {
   });
 }
 
-// ===== ПОИСК =====
 function performSearch(query) {
   if (!query) {
-    renderHomePage();
+    navigateTo('/');
     return;
   }
 
@@ -1113,7 +1089,7 @@ function performSearch(query) {
         </button>
       </div>
     `;
-    document.getElementById('backFromSearch').addEventListener('click', renderHomePage);
+    document.getElementById('backFromSearch').addEventListener('click', () => navigateTo('/'));
 
     const grid = document.getElementById('searchGrid');
     found.forEach(inst => {
@@ -1135,6 +1111,6 @@ function performSearch(query) {
         </button>
       </div>
     `;
-    document.getElementById('backFromEmpty').addEventListener('click', renderHomePage);
+    document.getElementById('backFromEmpty').addEventListener('click', () => navigateTo('/'));
   }
 }
